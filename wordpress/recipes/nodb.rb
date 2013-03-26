@@ -137,7 +137,7 @@ log "Navigate to 'http://#{server_fqdn}/wp-admin/install.php' to complete wordpr
 end
 
 template "#{node['wordpress']['dir']}/wp-config.php" do
-  source "wp-config.php.erb"
+  source "wp-config-custom.php.erb"
   owner "root"
   group "root"
   mode "0644"
