@@ -25,13 +25,23 @@ cloud_monitoring_entity "#{node.hostname}" do
   action :create
 end
 
+# Workaround: try to create the entity twice save the entity_id
+cloud_monitoring_entity "#{node.hostname}" do
+#  ip_addresses  'default_mon' => node[:ipaddress]
+  metadata      'environment' => 'dev', :more => 'meta data'
+  agent_id	node[:hostname]
+  action :create
+end
+
 cloud_monitoring_check  "cpuhigh" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   type                  'agent.cpu'
   period                30
   action :create
 end
 
 cloud_monitoring_alarm  "high cpu alarm" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   check_label           'cpuhigh'
   criteria              'if (metric["usage_average"] <= 50) { return new AlarmStatus(OK); } return new AlarmStatus(WARNING);'
   notification_plan_id  'npuUeZXZQk'
@@ -39,12 +49,14 @@ cloud_monitoring_alarm  "high cpu alarm" do
 end
 
 cloud_monitoring_check  "cpulow" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   type                  'agent.cpu'
   period                30
   action :create
 end
 
 cloud_monitoring_alarm  "low cpu" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   check_label           'cpulow'
   criteria              'if (metric["usage_average"] >= 0 && metric["usage_average"] < 3) { return new AlarmStatus(WARNING); } return new AlarmStatus(OK);'
   notification_plan_id  'npEAvodNa8'
@@ -52,6 +64,7 @@ cloud_monitoring_alarm  "low cpu" do
 end
 
 cloud_monitoring_check  "disk" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   type                  'agent.disk'
   details               'target' => '/dev/xvda1'
   period                30
@@ -59,6 +72,7 @@ cloud_monitoring_check  "disk" do
 end
 
 cloud_monitoring_check  "network" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   type                  'agent.network'
   details		'target' => 'eth0'
   period                30
@@ -66,6 +80,7 @@ cloud_monitoring_check  "network" do
 end
 
 cloud_monitoring_check  "memory" do
+  entity_id             node[:cloud_monitoring][:entity_id] 
   type                  'agent.memory'
   period                30
   action :create
