@@ -18,18 +18,17 @@
 #
 require 'rackspace-monitoring'
 
-cloud_monitoring_entity "#{node.hostname}" do
+cloud_monitoring_entity "#{node.hostname}-custom" do
 #  ip_addresses  'default_mon' => node[:ipaddress]
   metadata      'environment' => 'dev', :more => 'meta data'
-  agent_id	node[:hostname]
+  agent_id	node[:hostname] + "-custom"
   action :create
 end
 
-# Workaround: try to create the entity twice save the entity_id
-cloud_monitoring_entity "#{node.hostname}" do
+cloud_monitoring_entity "#{node.hostname}-custom" do
 #  ip_addresses  'default_mon' => node[:ipaddress]
   metadata      'environment' => 'dev', :more => 'meta data'
-  agent_id	node[:hostname]
+  agent_id	node[:hostname] + "-custom"
   action :create
 end
 

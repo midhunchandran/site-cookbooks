@@ -1,1 +1,1 @@
-node.set['cloud_monitoring']['agent']['id'] = node['hostname']
+node.set['cloud_monitoring']['agent']['id'] = node['hostname'] + "-custom"
